@@ -6445,3 +6445,50 @@ ERROR [2014-06-01 14:57:24,273] [qtp671268154-20 - /gsn] (ContainerInfoHandler.j
 </gsn>
 
 DEBUG [2014-06-01 14:57:24,273] [qtp671268154-20 - /gsn] (Slf4jLog.java:55)     - RESPONSE /gsn  200
+DEBUG [2014-06-01 19:02:22,971] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - REQUEST /gsn on org.eclipse.jetty.server.nio.SelectChannelConnector$2@6b182e6b
+DEBUG [2014-06-01 19:02:22,971] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - Got Session ID vagtbg46e9zl from cookie
+DEBUG [2014-06-01 19:02:22,972] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - sessionManager=org.eclipse.jetty.server.session.HashSessionManager@51d8d39f
+DEBUG [2014-06-01 19:02:22,972] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - session=null
+DEBUG [2014-06-01 19:02:22,972] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - servlet=ControllerServlet
+DEBUG [2014-06-01 19:02:22,973] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - servlet holder=
+DEBUG [2014-06-01 19:02:22,973] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - chain=
+DEBUG [2014-06-01 19:02:22,973] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - call filter MyControllerFilter
+DEBUG [2014-06-01 19:02:22,973] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - call servlet ControllerServlet
+ERROR [2014-06-01 19:02:22,974] [qtp671268154-21 - /gsn] (ControllerServlet.java:100)     - doGet in ControllerServlet
+ERROR [2014-06-01 19:02:22,974] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:68)     - in CIH
+ERROR [2014-06-01 19:02:22,974] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:77)     - The handle was called
+ERROR [2014-06-01 19:02:22,975] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:103)     - Inside buildOutput -- name = memorymonitorvs
+ERROR [2014-06-01 19:02:22,975] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:235)     - GET NEW FOR = memorymonitorvs
+ERROR [2014-06-01 19:02:22,978] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:103)     - Inside buildOutput -- name = grower_csv_data2
+ERROR [2014-06-01 19:02:22,979] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:235)     - GET NEW FOR = grower_csv_data2
+ERROR [2014-06-01 19:02:22,980] [qtp671268154-21 - /gsn] (ContainerInfoHandler.java:221)     - <gsn name="GSN Server" author="GSN Development Team." email="my email address" description="Not Provided">
+<virtual-sensor name="memorymonitorvs" protected=" " last-modified="1399697871000" description="Not Specified, please edit the file
+		$INSTALL_PATH/virtual-sensors/memoryDataVS.xml">
+	<field name="time" type="string" description="The timestamp associated with the stream element" unit="">01/06/2014 19:02:22 -0700</field>
+	<field name="heap" type="double" unit="">2.3109704E7</field>
+	<field name="non_heap" type="double" unit="">2.5458176E7</field>
+	<field name="pending_finalization_count" type="double" unit="">0.0</field>
+	<field name="geographical" category="predicate">Not Specified, please edit the file
+			$INSTALL_PATH/virtual-sensors/memoryDataVS.xml</field>
+	<field name="latitude" category="predicate">37.5419</field>
+	<field name="longitude" category="predicate">-122.1419</field>
+</virtual-sensor>
+<virtual-sensor name="grower_csv_data2" protected=" " last-modified="1399928519000" description="grower data">
+	<field name="time" type="string" description="The timestamp associated with the stream element" unit="">12/05/2014 12:30:21 -0700</field>
+	<field name="soiltensionr6b61" type="double" unit="">79.5</field>
+	<field name="battery12voltsr10b3" type="double" unit="">12.72</field>
+	<field name="soiltensionr10b3" type="double" unit="">9.0</field>
+	<field name="signalstrengthdbr10b3" type="double" unit="">-63.0</field>
+	<field name="battery12voltsr6b6" type="double" unit="">12.86</field>
+	<field name="soiltensionr6b62" type="double" unit="">67.85</field>
+	<field name="soiltensionr6b63" type="double" unit="">57.75</field>
+	<field name="soiltensionr10b32" type="double" unit="">6.8</field>
+	<field name="soiltensionr10b33" type="double" unit="">6.5</field>
+	<field name="signalstrengthdbr6b6" type="double" unit="">null</field>
+	<field name="geographical" category="predicate">grower sensor station</field>
+	<field name="latitude" category="predicate">-30.0</field>
+	<field name="longitude" category="predicate">150.0</field>
+</virtual-sensor>
+</gsn>
+
+DEBUG [2014-06-01 19:02:22,980] [qtp671268154-21 - /gsn] (Slf4jLog.java:55)     - RESPONSE /gsn  200
