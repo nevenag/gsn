@@ -3,6 +3,12 @@ package gsn.wrappers;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import gsn.beans.AddressBean;
+import gsn.beans.DataField;
+import gsn.beans.DataTypes;
+import gsn.beans.StreamElement;
+import gsn.wrappers.AbstractWrapper;
+import gsn.utils.ParamParser;
 
 import org.apache.log4j.Logger;
 
@@ -16,9 +22,20 @@ public class HttpPostAndroidWrapper extends AbstractWrapper {
 	private static String urlPath, longitude, latitude;
 	private AddressBean addressBean;
 	private String inputRate;
-	private static final String FIELD_NAME_LONG = "Longitude";
-	private static final String FIELD_NAME_LAT = "Latitude";
-	private static final String[] FIELD_NAMES = new String[] { FIELD_NAME_LONG,			FIELD_NAME_LAT };
+	//private static final String FIELD_NAME_LONG = "Longitude";
+	//private static final String FIELD_NAME_LAT = "Latitude";
+	// TODO add those tooprivate static final String[] FIELD_NAMES = new String[] {  };
+	private static final String       POSITION_X                       = "POSITION_X";
+	   
+	private static final String       POSITION_Y                   = "POSITION_Y";
+	   
+	private static final String       POSITION_Z = "POSITION_Z";        
+
+	private static final String [ ]   FIELD_NAMES                           = new String [ ] { POSITION_X, POSITION_Y, POSITION_Z};
+	   
+
+
+	
 	private int rate;
 	public boolean requestCame = false;
 	@Override
@@ -28,16 +45,31 @@ public class HttpPostAndroidWrapper extends AbstractWrapper {
 	}
 
 	public void run(){
-		synchronized(HttpPostAndroidWrapper.class){
-			while(!requestCame){
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		while (isActive()){
+			synchronized (HttpPostAndroidWrapper.class) {
+				while (!requestCame) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
-		}		
+				// i got notified - i'm no longer waiting?
+				// should this be out of synchronized?
+
+
+//				 StreamElement streamElement = new StreamElement( 
+//
+//				FIELD_NAMES , 
+//				new Byte [ ] { DataTypes.BIGINT , DataTypes.BIGINT , DataTypes.BIGINT } , 
+//				new Serializable [ ] { putx ,  puty, putz} , System.currentTimeMillis( ) );
+//
+//
+//				     postStreamElement( streamElement );
+//				     }
+			}		
+		}
 	}
 	
 	
