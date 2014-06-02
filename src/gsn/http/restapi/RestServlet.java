@@ -32,6 +32,7 @@ import gsn.Mappings;
 import gsn.http.ac.DataSource;
 import gsn.http.ac.User;
 import gsn.http.ac.UserUtils;
+import gsn.http.rest.EventQueue;
 import gsn.wrappers.HttpPostAndroidWrapper;
 
 import java.io.BufferedReader;
@@ -256,6 +257,12 @@ public class RestServlet extends HttpServlet {
     	
     	StringBuilder sb = new StringBuilder();
     	BufferedReader br = request.getReader();
+    	logger.error("is queue empty " + EventQueue.getInstance().isEmpty());
+    	
+    	
+    	// TODO implement from json to dataField[] method
+    	
+    	
     	try {
 			String line;
 			while((line = br.readLine()) != null){
@@ -270,6 +277,7 @@ public class RestServlet extends HttpServlet {
     	
     	try {
 			JSONObject jo = new JSONObject(sb.toString());
+			EventQueue.getInstance().addData("come here" + jo.toString());
 		} catch (JSONException e) {
 			logger.error("error parsing json");
 		}
