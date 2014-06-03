@@ -2,8 +2,11 @@
     <processing-class>
         <class-name>gsn.vsensor.BridgeVirtualSensor</class-name>
         <output-structure>
-            <field name="Accelerometer_x" type="double" />
-	    <field name="Accelerometer_y" type="double" />
+            <field name="accelerometer_x" type="string"/>
+	    <field name="accelerometer_y" type="string"/>
+	    <field name="accelerometer_z" type="string"/>
+	    <field name="pressure_x" type="string"/>
+	    <field name="light_x" type="string"/>
         </output-structure>
 
     </processing-class>
