@@ -278,7 +278,6 @@ public abstract class AbstractWrapper extends Thread {
 	public boolean insertIntoWrapperTable(StreamElement se) throws SQLException {
 		if (listeners.size() == 0)
 			return false;
-logger.error("inserting se " + se.toString());
 		Connection conn = null;
 		try {
             if (isOutOfOrder(se)) {
@@ -288,7 +287,6 @@ logger.error("inserting se " + se.toString());
 			conn = Main.getWindowStorage().getConnection();
 			Main.getWindowStorage().executeInsert(aliasCodeS, getOutputFormat(), se, conn);
             lastInOrderTimestamp = se.getTimeStamp();
-            logger.error("inserted");
             return true;
 		} finally {
 			Main.getWindowStorage().close(conn);
