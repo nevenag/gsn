@@ -1,9 +1,42 @@
+/**
+* Global Sensor Networks (GSN) Source Code
+* Copyright (c) 2006-2014, Ecole Polytechnique Federale de Lausanne (EPFL)
+* 
+* This file is part of GSN.
+* 
+* GSN is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* GSN is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with GSN.  If not, see <http://www.gnu.org/licenses/>.
+* 
+* File: src/gsn/wrappers/RemoteEventPushWrapper.java
+*
+* The class is a wrapper for the Android phone.
+* 
+* @author Nevena Golubovic
+*
+*/
+
 package gsn.wrappers;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
+
+import javax.swing.plaf.basic.BasicBorders.FieldBorder;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import gsn.beans.AddressBean;
 import gsn.beans.DataField;
@@ -19,10 +52,15 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 	private int                         samplingRate                = DEFAULT_SAMPLING_RATE;
 	private final transient Logger      logger                      = Logger.getLogger(RemoteEventPushWrapper.class);
 	private static int                  threadCounter               = 0;
-	private final static String 		DF_NAME						= "Accelerometer";
-	private final static String[]		FIELD_NAMES					= new String[] {DF_NAME};
+	private final static String 		ACCELEROMETER_X				= "Accelerometer_x";
+	private final static String 		ACCELEROMETER_Y				= "Accelerometer_y";
+	private final static String[]		FIELD_NAMES					= new String[] {ACCELEROMETER_X, ACCELEROMETER_Y};
 	// TODO update me with all the phone sensors
-	private transient DataField[]       outputStructureCache        = new DataField[]{new DataField(DF_NAME, "bigint", "Accelerometer coordinates")};
+	private transient DataField[]       outputStructureCache        = new DataField[]{
+						new DataField(ACCELEROMETER_X, "double", "Accelerometer coordinate x"),
+						new DataField(ACCELEROMETER_Y, "double", "Accelerometer coordinate y")};
+
+
 	
 	@Override
 	public DataField[] getOutputFormat() {
@@ -45,7 +83,7 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 	}
 	
 	public void run(){
-		String data = "no data";
+		JSONObject data = new JSONObject();
 		while(isActive()){
             try{
                 //Thread.sleep(samplingRate);
@@ -55,21 +93,49 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
             }
             
             if(EventQueue.getInstance().isEmpty()){
-            	// ...
+            	 logger.error("New data from the sensor is missing.");
             }else{
             	data = EventQueue.getInstance().removeData();
+            	StreamElement streamElement = jsonToStreamElemet(data);
+            	logger.error("*** yay *** data: " + data);
+//                StreamElement streamElement = new StreamElement(FIELD_NAMES, 
+//            												new Byte[]{DataTypes.DOUBLE, DataTypes.DOUBLE}, 
+//            												new Serializable[] {Double.parseDouble("123.3"), Double.parseDouble("123.5")},
+//            												System.currentTimeMillis());
+                postStreamElement(streamElement);
             }
-         
-            logger.error("data here in run of the wrapper" + data);
             
-            StreamElement streamElement = new StreamElement(FIELD_NAMES, 
-            												new Byte[]{DataTypes.BIGINT}, 
-            												new Serializable[] {123},
-            												System.currentTimeMillis());
-            postStreamElement(streamElement);
         }
 	}
 	
+// TODO having a map inside the DataType would make this code cleaner
+	
+
+	
+	private StreamElement jsonToStreamElemet(JSONObject jo) {
+		final String[] field_names; 
+		final Byte[] field_bytes;
+		final Serializable[] field_values;
+		try {
+			JSONArray fields = jo.getJSONArray("fields");
+			field_names = new String[fields.length()];
+			field_bytes = new Byte[fields.length()];
+			field_values = new String[fields.length()];
+			for (int i = 0; i < fields.length(); i++){
+				JSONObject field = fields.getJSONObject(i);
+				field_names[i] = field.get("name").toString();
+				field_bytes[i] = DataTypes.VARCHAR;
+				field_values[i] = (String) field.get("value");				
+			}
+			
+			return new StreamElement(field_names, field_bytes, field_values, System.currentTimeMillis());
+			
+		} catch (JSONException e) {
+			logger.error("could not parse JSONObject " + jo.toString());
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	@Override
 	public void dispose() {

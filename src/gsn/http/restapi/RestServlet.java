@@ -257,37 +257,23 @@ public class RestServlet extends HttpServlet {
     	
     	StringBuilder sb = new StringBuilder();
     	BufferedReader br = request.getReader();
-    	logger.error("is queue empty " + EventQueue.getInstance().isEmpty());
-    	
-    	
-    	// TODO implement from json to dataField[] method
-    	
     	
     	try {
 			String line;
 			while((line = br.readLine()) != null){
 				sb.append(line).append('\n');
 			}
-			logger.error("line" + line);
-			logger.error("sb" + sb.toString());
-			logger.error("request" + request.getContentType());
 		} finally {
 			br.close();
 		}
     	
     	try {
 			JSONObject jo = new JSONObject(sb.toString());
-			EventQueue.getInstance().addData("come here" + jo.toString());
+			EventQueue.getInstance().addData(jo);
 		} catch (JSONException e) {
 			logger.error("error parsing json");
 		}
-    	
-    	
-    	
-//    	synchronized(HttpPostAndroidWrapper.class){
-//			HttpPostAndroidWrapper.class.notifyAll();
-//		}
-    	
+
     	response.getWriter().write("REST POST" + "\n" + request.getRequestURI());
     }
 

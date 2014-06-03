@@ -19,10 +19,10 @@
 * 
 * File: src/gsn/http/rest/EventQueue.java
 *
-* Class is used to queue requests from the sensor to post data to the GSN.
-* Requests are consumed by RemoteEventPush wrapper. 
-*
-* @author Ali Salehi
+* The class is used to queue requests, represented as JSONObjects,
+* that are coming from the sensor, in this case an Android phone,
+* and will be consumed by the wrapper, in this case RemoteEventPushWrapper.
+* 
 * @author Nevena Golubovic
 *
 */
@@ -30,13 +30,14 @@
 package gsn.http.rest;
 
 import java.util.LinkedList;
-
+import org.codehaus.jettison.json.JSONObject;
 
 public class EventQueue {
 	
 	private static EventQueue singleton = new EventQueue();
 	
-	private LinkedList<String> data = new LinkedList<String>();
+	// JSONObjects containing all the data sent from the sensor
+	private LinkedList<JSONObject> data = new LinkedList<JSONObject>();
 	
 	public static EventQueue getInstance(){
 		return singleton;
@@ -46,11 +47,11 @@ public class EventQueue {
 		return data.isEmpty();
 	}
 	
-	public void addData(String data){
+	public void addData(JSONObject data){
 		this.data.add(data);
 	}
 	
-	public String removeData(){
+	public JSONObject removeData(){
 		return data.remove();
 	}
 	
