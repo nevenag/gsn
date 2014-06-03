@@ -125,7 +125,7 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 				JSONObject field = fields.getJSONObject(i);
 				field_names[i] = field.get("name").toString();
 				field_bytes[i] = DataTypes.VARCHAR;
-				field_values[i] = (String) field.get("value");				
+				field_values[i] = field.get("value").toString();				
 			}
 			
 			return new StreamElement(field_names, field_bytes, field_values, System.currentTimeMillis());
