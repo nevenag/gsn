@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroGSN</string>
+    <string name="welcome">Welcome to AndroGSN!</string>
+    <string name="proximity">Proximity sensor</string>
+    <string name="pressure">Pressure</string>
+    <string name="light">Light sensor</string>
+    <string name="accelerometer">Accelerometer sensor</string>
+    <string name="temperature">Temperature sensor</string>
+    <string name="action_settings">Settings</string>
+    <string name="send_data">Send Data</string>
+
+</resources>
