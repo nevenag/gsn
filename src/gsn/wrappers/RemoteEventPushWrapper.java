@@ -27,24 +27,20 @@
 
 package gsn.wrappers;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.HashMap;
-
-import javax.swing.plaf.basic.BasicBorders.FieldBorder;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
 import gsn.beans.AddressBean;
 import gsn.beans.DataField;
 import gsn.beans.DataTypes;
 import gsn.beans.StreamElement;
 import gsn.http.rest.EventQueue;
 import gsn.utils.ParamParser;
-import gsn.wrappers.AbstractWrapper;
+
+import java.io.Serializable;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 public class RemoteEventPushWrapper extends AbstractWrapper{
 	
@@ -88,7 +84,7 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 		JSONObject data = new JSONObject();
 		while(isActive()){
             try{
-                Thread.sleep(samplingRate);
+                Thread.sleep(samplingRate);            	
             }catch (InterruptedException e){
                 logger.error(e.getMessage(), e);
             }
@@ -96,23 +92,22 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
             if(EventQueue.getInstance().isEmpty()){
             	 logger.error("New data from the sensor is missing.");
             }else{
-            	data = EventQueue.getInstance().removeData();
-            	StreamElement streamElement = jsonToStreamElemet(data);
-            	logger.error("*** yay *** data: " + data);
-//                StreamElement streamElement = new StreamElement(FIELD_NAMES, 
-//            												new Byte[]{DataTypes.DOUBLE, DataTypes.DOUBLE}, 
-//            												new Serializable[] {Double.parseDouble("123.3"), Double.parseDouble("123.5")},
-//            												System.currentTimeMillis());
-            	logger.error("streamElement: " + streamElement.toString());
-                postStreamElement(streamElement);
-            }
-            
+            	try {
+            		data = EventQueue.getInstance().removeData();
+                	StreamElement streamElement = jsonToStreamElemet(data);
+                	logger.error("*** not an error *** data: " + data);
+//                    StreamElement streamElement = new StreamElement(FIELD_NAMES, 
+//                												new Byte[]{DataTypes.DOUBLE, DataTypes.DOUBLE}, 
+//                												new Serializable[] {Double.parseDouble("123.3"), Double.parseDouble("123.5")},
+//                												System.currentTimeMillis());
+                	logger.error("streamElement: " + streamElement.toString());
+                    postStreamElement(streamElement);
+				} catch (NoSuchElementException e) {
+					logger.error("EventQueue is empty.");
+				}            	
+            }            
         }
 	}
-	
-// TODO having a map inside the DataType would make this code cleaner
-	
-
 	
 	private StreamElement jsonToStreamElemet(JSONObject jo) {
 		final String[] field_names; 

@@ -29,15 +29,19 @@
 
 package gsn.http.rest;
 
-import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
 
 public class EventQueue {
 	
 	private static EventQueue singleton = new EventQueue();
-	
+	//private static int QUEUE_SIZE = 1000;
+	private final static transient Logger logger = Logger.getLogger(EventQueue.class);
 	// JSONObjects containing all the data sent from the sensor
-	private LinkedList<JSONObject> data = new LinkedList<JSONObject>();
+	private LinkedBlockingQueue<JSONObject> data = new LinkedBlockingQueue<JSONObject>(100);
 	
 	public static EventQueue getInstance(){
 		return singleton;
@@ -48,10 +52,16 @@ public class EventQueue {
 	}
 	
 	public void addData(JSONObject data){
-		this.data.add(data);
+		try {
+			this.data.add(data);
+		} catch (IllegalStateException e) {
+			logger.error("EventQueue is full.");
+			// this also means data is old. clear it
+			this.data.clear();
+		}		
 	}
 	
-	public JSONObject removeData(){
+	public JSONObject removeData() throws NoSuchElementException{
 		return data.remove();
 	}
 	
