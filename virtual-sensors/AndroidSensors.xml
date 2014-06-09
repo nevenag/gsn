@@ -13,15 +13,14 @@
     <description>Virtual sensor for Android phones</description>
     <life-cycle pool-size="10" />
     <addressing>
-        <predicate key="geographical">Not Specified, please edit the file
-            $INSTALL_PATH/virtual-sensors/AndroidSensors.xml</predicate>
+        <predicate key="geographical">Not Specified.</predicate>
         <predicate key="LATITUDE">123</predicate>
         <predicate key="LONGITUDE">-123</predicate>
     </addressing>
     <storage history-size="1" />
     <streams>
         <stream name="input1">
-            <source alias="source1" sampling-rate="1" storage-size="1">
+            <source alias="source1" sampling-rate="10" storage-size="1">
                 <address wrapper="android-push">
                     <predicate key="sampling-rate">1000</predicate>
                 </address>

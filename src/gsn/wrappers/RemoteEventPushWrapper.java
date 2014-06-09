@@ -54,13 +54,16 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 	private static int                  threadCounter               = 0;
 	private final static String 		ACCELEROMETER_X				= "Accelerometer_x";
 	private final static String 		ACCELEROMETER_Y				= "Accelerometer_y";
-	private final static String[]		FIELD_NAMES					= new String[] {ACCELEROMETER_X, ACCELEROMETER_Y};
-	// TODO update me with all the phone sensors
+	private final static String 		ACCELEROMETER_Z				= "Accelerometer_z";
+	private final static String 		PRESSURE_X					= "Pressure_x";
+	private final static String 		LIGHT_X						= "Light_x";
+	//private final static String[]		FIELD_NAMES					= new String[] {ACCELEROMETER_X, ACCELEROMETER_Y, ACCELEROMETER_Z, PRESSURE_X, LIGHT_X};
 	private transient DataField[]       outputStructureCache        = new DataField[]{
 						new DataField(ACCELEROMETER_X, "double", "Accelerometer coordinate x"),
-						new DataField(ACCELEROMETER_Y, "double", "Accelerometer coordinate y")};
-
-
+						new DataField(ACCELEROMETER_Y, "double", "Accelerometer coordinate y"),
+						new DataField(ACCELEROMETER_Z, "double", "Accelerometer coordinate z"),
+						new DataField(PRESSURE_X, "double", "Pressure coordinate x"),
+						new DataField(LIGHT_X, "double", "Light coordinate x"),};
 	
 	@Override
 	public DataField[] getOutputFormat() {
@@ -68,8 +71,7 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 	}
 
 	@Override
-	public boolean initialize() {
-		
+	public boolean initialize() {		
 		setName("RemoteEventPushWrapper-Thread" + (++threadCounter));
 		AddressBean addressBean = getActiveAddressBean();
 		if(addressBean.getPredicateValue("sampling-rate") != null){
@@ -86,8 +88,7 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 		JSONObject data = new JSONObject();
 		while(isActive()){
             try{
-                //Thread.sleep(samplingRate);
-            	Thread.sleep(30000);
+                Thread.sleep(samplingRate);
             }catch (InterruptedException e){
                 logger.error(e.getMessage(), e);
             }
@@ -102,6 +103,7 @@ public class RemoteEventPushWrapper extends AbstractWrapper{
 //            												new Byte[]{DataTypes.DOUBLE, DataTypes.DOUBLE}, 
 //            												new Serializable[] {Double.parseDouble("123.3"), Double.parseDouble("123.5")},
 //            												System.currentTimeMillis());
+            	logger.error("streamElement: " + streamElement.toString());
                 postStreamElement(streamElement);
             }
             
